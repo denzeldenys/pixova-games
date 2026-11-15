@@ -20,7 +20,7 @@ const ROWS = 6; // 5 rows of track + the Start row
 
 /** Board coordinates (% of the square board) for a space 0..30. Serpentine from bottom to top. */
 function spaceXY(space: number) {
-  if (space <= 0) return { x: (0.5 / COLS) * 100, y: ((ROWS - 0.5) / ROWS) * 100 };
+  if (space <= 0) return { x: 50, y: ((ROWS - 0.5) / ROWS) * 100 }; // Start is a wide lane along the bottom
   const s = Math.min(space, FINISH) - 1;
   const row = Math.floor(s / COLS); // 0 = bottom track row
   const i = s % COLS;
@@ -153,7 +153,7 @@ export default function ClashRaceView({ view, sendAction, myId, players }: GameC
       <div className="cr-board" style={{ backgroundImage: `url(${trackBg})` }}>
         <svg className="cr-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
           <polyline
-            points={Array.from({ length: FINISH + 1 }, (_, s) => { const p = spaceXY(s); return `${p.x},${p.y}`; }).join(' ')}
+            points={Array.from({ length: FINISH }, (_, s) => { const p = spaceXY(s + 1); return `${p.x},${p.y}`; }).join(' ')}
           />
         </svg>
         {Array.from({ length: FINISH + 1 }, (_, s) => {
@@ -171,10 +171,19 @@ export default function ClashRaceView({ view, sendAction, myId, players }: GameC
           const idx = group.indexOf(id);
           const n = group.length;
           const p = spaceXY(space);
-          const spread = n > 1 ? 3.2 : 0;
-          const angle = (idx / n) * Math.PI * 2;
-          const x = p.x + Math.cos(angle) * spread;
-          const y = p.y + Math.sin(angle) * spread - 1.5;
+          let x: number;
+          let y: number;
+          if (space === 0) {
+            // line up side by side in the Start lane
+            const step = Math.min(11.5, 84 / n);
+            x = 8 + idx * step;
+            y = p.y - 1;
+          } else {
+            const spread = n > 1 ? 3.2 : 0;
+            const angle = (idx / n) * Math.PI * 2;
+            x = p.x + Math.cos(angle) * spread;
+            y = p.y + Math.sin(angle) * spread - 1.5;
+          }
           const player = byId[id];
           return (
             <div
@@ -236,7 +245,7 @@ export default function ClashRaceView({ view, sendAction, myId, players }: GameC
         {picking && view.myPick == null && <div className="cr-hint">Pick a number. Unique numbers move!</div>}
         {picking && view.myPick != null && <div className="cr-hint">Locked in <b>{view.myPick}</b>. Waiting for others…</div>}
         {!picking && <div className="cr-hint">&nbsp;</div>}
-        <div className="cr-numbers" style={{ gridTemplateColumns: `repeat(${Math.min(view.maxPick, 5)}, 1fr)` }}>
+        <div className="cr-numbers" style={{ gridTemplateColumns: `repeat(${view.maxPick <= 6 ? view.maxPick : Math.ceil(view.maxPick / 2)}, 1fr)` }}>
           {Array.from({ length: view.maxPick }, (_, i) => i + 1).map((n) => (
             <button
               key={n}

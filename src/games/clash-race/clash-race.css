@@ -25,7 +25,11 @@
 .cr-space.checkpoint { background: #0f6b5c; border-color: var(--green); color: #fff; }
 .cr-space.checkpoint .cp-flag { font-size: 0.9em; line-height: 1; }
 .cr-space.checkpoint .cp-num { font-size: 0.75em; line-height: 1; }
-.cr-space.start { background: var(--cyan); border-color: #fff; color: #06283a; font-size: clamp(0.5rem, 2vw, 0.75rem); }
+.cr-space.start {
+  width: 96%; aspect-ratio: auto; height: 13.4%; border-radius: 14px; align-items: flex-end; padding-right: 4%;
+  background: repeating-linear-gradient(135deg, #0e8aa3 0 12px, #12a2bf 12px 24px); border-color: var(--cyan); color: #fff;
+  font-size: clamp(0.6rem, 2.4vw, 0.85rem); letter-spacing: 0.2em;
+}
 .cr-space.finish {
   background: repeating-conic-gradient(#fff 0 25%, #222 0 50%) 50% / 40% 40%;
   border-color: var(--yellow); font-size: clamp(1rem, 4vw, 1.5rem);

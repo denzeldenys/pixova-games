@@ -149,7 +149,7 @@ img { user-select: none; -webkit-user-drag: none; }
 
 /* ---------- room ---------- */
 .room-header { display: flex; align-items: center; gap: 10px; }
-.room-title { flex: 1; font-weight: 1000; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.room-title { flex: 1; font-weight: 1000; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; min-width: 0; white-space: nowrap; overflow: hidden; }
 .room-code-chip { background: var(--bg-2); border: 2px solid var(--line); border-radius: 10px; padding: 2px 8px; letter-spacing: 0.15em; font-size: 0.85rem; }
 .code-card { background: var(--panel); border: 3px solid var(--line); border-radius: 22px; padding: 16px; text-align: center; }
 .room-code { display: flex; justify-content: center; gap: 8px; margin: 6px 0 14px; }
